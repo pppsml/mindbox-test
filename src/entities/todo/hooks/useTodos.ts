@@ -1,6 +1,6 @@
-import { useLocalStorage } from "@mantine/hooks";
+import { useState } from 'react'
 
-import { AddTodo, ToggleTodoComplete, DeleteTodo, Todo } from "./model"
+import { AddTodo, ToggleTodoComplete, DeleteTodo, Todo } from "../model"
 import { generateId } from "@/shared/lib"
 
 interface useTodosOptions {
@@ -19,7 +19,12 @@ interface useTodosReturnType {
 
 
 export const useTodos = (options?: useTodosOptions):useTodosReturnType => {
-  const [ todos, setTodos ] = useLocalStorage({ key: 'todos', defaultValue: options?.initialTodos || [] })
+  const [ todos, setTodos ] = useState<Todo[]>(() => {
+    const storagedTodos = JSON.parse(localStorage.getItem('todos') ?? 'null') as Todo[] | null
+    return options?.initialTodos || storagedTodos || []
+  })
+
+  localStorage.setItem('todos', JSON.stringify(todos))
 
   const addTodo: AddTodo = (title) => {
     const newTodo: Todo = {
