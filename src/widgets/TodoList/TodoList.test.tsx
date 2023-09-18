@@ -1,8 +1,6 @@
-import { act, render, renderHook, screen, } from '@testing-library/react'
+import { render, screen, } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
-
-import { useTodos } from '@/entities/todo/hooks'
 import { TodoList } from './index'
 
 describe('TodoList widget', () => {
