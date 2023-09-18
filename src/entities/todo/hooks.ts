@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useLocalStorage } from "@mantine/hooks";
 
-import { Todo } from "./model"
+import { AddTodo, ToggleTodoComplete, DeleteTodo, Todo } from "./model"
 import { generateId } from "@/shared/lib"
 
 interface useTodosOptions {
@@ -10,32 +10,28 @@ interface useTodosOptions {
   initialTodos?: Todo[]
 }
 
-
-type AddTodo = (title: Todo['title']) => void
-type CompleteTodo = (id: Todo['id']) => void
-
 interface useTodosReturnType {
   todos: Todo[];
   addTodo: AddTodo;
-  toggleIsCompleted: CompleteTodo;
+  deleteTodo: DeleteTodo;
+  toggleCompleted: ToggleTodoComplete;
 }
 
 
 export const useTodos = (options?: useTodosOptions):useTodosReturnType => {
-  const [ todos, setTodos ] = useState(options?.initialTodos || [])
+  const [ todos, setTodos ] = useLocalStorage({ key: 'todos', defaultValue: options?.initialTodos || [] })
 
   const addTodo: AddTodo = (title) => {
     const newTodo: Todo = {
       id: generateId(),
       title,
-      createdAd: Date.now(),
       isCompleted: false,
     }
 
     setTodos(prevTodos => [...prevTodos, newTodo])
   }
 
-  const toggleIsCompleted: CompleteTodo = (id) => {
+  const toggleCompleted: ToggleTodoComplete = (id) => {
     const newTodos = todos.map(todo => {
       if (todo.id === id) {
         todo.isCompleted = !todo.isCompleted
@@ -46,10 +42,19 @@ export const useTodos = (options?: useTodosOptions):useTodosReturnType => {
 
     setTodos(newTodos)
   }
+
+  const deleteTodo: DeleteTodo = (id) => {
+    setTodos(prevTodos => {
+      const newTodos = prevTodos.filter(todo => todo.id !== id)
+
+      return newTodos
+    })
+  }
   
   return {
     todos,
     addTodo,
-    toggleIsCompleted,
+    toggleCompleted,
+    deleteTodo,
   } as useTodosReturnType
 }

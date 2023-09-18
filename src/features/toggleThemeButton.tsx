@@ -1,15 +1,18 @@
-import { ActionIcon, useMantineColorScheme } from '@mantine/core'
+import { ActionIcon, ActionIconProps, useMantineColorScheme } from '@mantine/core'
 import { TbSun, TbMoonStars } from 'react-icons/tb'
 
-export const ColorSchemeButton = () => {
+type Props = Omit<ActionIconProps, 'variant' | 'color' | 'onClick'>
+
+export const ColorSchemeButton = (props: Props) => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
 
   return (
     <ActionIcon
+    {...props}
     variant="outline"
     color={colorScheme === 'dark' ? 'yellow' : 'blue'}
     onClick={() => toggleColorScheme()}>
-      { colorScheme === 'dark' ? <TbSun size='1.1rem' /> : <TbMoonStars size='1.1rem' />  }
+      { colorScheme === 'dark' ? <TbSun size='70%' /> : <TbMoonStars size='1.1rem' />  }
     </ActionIcon>
   )
 }

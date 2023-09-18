@@ -2,6 +2,7 @@ import { AppShell, MantineProvider, ColorSchemeProvider, ColorScheme } from '@ma
 import { useLocalStorage } from '@mantine/hooks'
 
 import { TodosPage } from '@/pages/todos'
+import { HeaderWidget } from './widgets/Header'
 
 function App() {
   const [ colorScheme, setColorScheme ] = useLocalStorage<ColorScheme>({ key: 'colorScheme', defaultValue: 'light' })
@@ -14,7 +15,7 @@ function App() {
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider withGlobalStyles theme={{ colorScheme }}>
-        <AppShell>
+        <AppShell header={<HeaderWidget />}>
           <TodosPage />
         </AppShell>
       </MantineProvider>
