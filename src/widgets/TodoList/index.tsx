@@ -1,6 +1,7 @@
 
 
 import { useTodos } from "@/entities/todo/hooks"
+import { ColorSchemeButton } from "@/features/toggleThemeButton"
 import { useState } from "react"
 
 export const TodoList = () => {
@@ -20,6 +21,7 @@ export const TodoList = () => {
           </div>
         ))
       }
+      <ColorSchemeButton />
     </>
   )
 }
